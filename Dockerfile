@@ -1,6 +1,6 @@
 # ---- BUILD ENVIRONMENT ----- #
 
-FROM ghcr.io/ioxiocom/python-base:ubuntu22.04-python3.11 AS build
+FROM ghcr.io/ioxiocom/python-base:ubuntu24.04-python3.13 AS build
 
 WORKDIR /src/productizer
 
@@ -9,12 +9,12 @@ RUN bash /src/docker/build-prepare.sh
 
 ADD pyproject.toml poetry.lock ./
 ADD docker/build-setup.sh /src/docker/build-setup.sh
-RUN --mount=type=cache,uid=1000,gid=1000,target=/home/${USER}/.cache bash /src/docker/build-setup.sh
+RUN --mount=type=cache,uid=2000,gid=2000,target=/home/${USER}/.cache bash /src/docker/build-setup.sh
 
 
 # ---- RUNTIME ENVIRONMENT ----- #
 
-FROM ghcr.io/ioxiocom/python-base:ubuntu22.04-python3.11 AS runtime
+FROM ghcr.io/ioxiocom/python-base:ubuntu24.04-python3.13 AS runtime
 
 COPY --from=build ${WORKON_HOME} ${WORKON_HOME}
 
